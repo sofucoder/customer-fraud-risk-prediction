@@ -1,0 +1,42 @@
+{
+  "model_name": "LogisticRegression (snapshot-weighted)",
+  "model_family": "LogisticRegression",
+  "model_version": "1.0.0",
+  "calibration_method": "isotonic",
+  "decision_objective": "f1",
+  "decision_threshold": 0.14,
+  "threshold_alternatives": {
+    "f1": 0.14,
+    "f2": 0.09999999999999999,
+    "top10pct": 0.24702380952380948
+  },
+  "risk_bands": [
+    {
+      "min": 0,
+      "max": 20,
+      "label": "Very Low"
+    },
+    {
+      "min": 20,
+      "max": 40,
+      "label": "Low"
+    },
+    {
+      "min": 40,
+      "max": 60,
+      "label": "Medium"
+    },
+    {
+      "min": 60,
+      "max": 80,
+      "label": "High"
+    },
+    {
+      "min": 80,
+      "max": 101,
+      "label": "Very High"
+    }
+  ],
+  "risk_score_formula": "risk_score = calibrated_probability * 100",
+  "snapshot_reweighting_used": true
+}

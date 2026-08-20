@@ -1,0 +1,15 @@
+{
+  "selected_model": "LogisticRegression (snapshot-weighted)",
+  "metrics": {
+    "pr_auc": 0.23271276330375168,
+    "recall": 0.2570281124497992,
+    "f1": 0.25296442687747034,
+    "roc_auc": 0.6225648305376614,
+    "brier_score": 0.17680366080830495
+  },
+  "calibration_brier": {
+    "uncalibrated": 0.17680366080830495,
+    "isotonic": 0.12660784259460203,
+    "platt": 0.12880849609704043
+  }
+}
