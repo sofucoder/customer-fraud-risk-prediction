@@ -5,7 +5,7 @@ Loads artifacts once at startup -- no retraining, no per-request model loading.
 
 ## Setup
 
-1. Run the notebook through Section 33 in Kaggle.
+1. Run the notebook through Section 34 in Kaggle.
 2. Download `/kaggle/working/fraud_detection_output/` and place its contents at
    `backend/model_artifacts/` (i.e. `backend/model_artifacts/model/model.pkl`, etc.).
 3. `pip install -r requirements.txt`
