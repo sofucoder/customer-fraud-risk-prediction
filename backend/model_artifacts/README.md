@@ -1,4 +1,4 @@
-# Fraud Risk Model Artifacts (v1.0.0)
+cd ~/Desktop/InternShip/Summer_Camp/Project/fraud_backend_fastapi/backend# Fraud Risk Model Artifacts (v1.0.0)
 
 Model: LogisticRegression (snapshot-weighted)
 Calibration: isotonic

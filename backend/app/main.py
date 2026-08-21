@@ -72,6 +72,41 @@ def health() -> HealthResponse:
     )
 
 
+@app.get("/schema")
+def schema() -> dict:
+    """Exposes the exact raw feature contract (names + which are categorical) so a frontend
+    can render a single-customer form dynamically instead of hardcoding feature names that
+    will drift out of sync every time the notebook's feature engineering changes."""
+    bundle = _get_bundle()
+    return {
+        "numerical_columns": bundle.feature_spec["raw_numerical_columns"],
+        "categorical_columns": bundle.feature_spec["raw_categorical_columns"],
+        "risk_bands": [
+            {"min": b.lo, "max": b.hi, "label": b.label} for b in bundle.risk_bands
+        ],
+        "decision_threshold": bundle.decision_threshold,
+        "model_name": bundle.config["model_name"],
+    }
+
+
+@app.get("/metrics")
+def metrics() -> dict:
+    """Read-only passthrough of the notebook's own saved validation/test metrics
+    (metrics/validation_metrics.json, metrics/test_metrics.json under the artifact
+    bundle), so a 'Model Insights' UI page can show real evaluation numbers instead of
+    the frontend hardcoding figures that go stale the moment the model is retrained.
+    Returns nulls for whichever file isn't present rather than failing the request."""
+    from .artifacts import ARTIFACT_DIR
+    import json as _json
+
+    def _read(path):
+        return _json.loads(path.read_text()) if path.exists() else None
+
+    val_path = ARTIFACT_DIR / "metrics" / "validation_metrics.json"
+    test_path = ARTIFACT_DIR / "metrics" / "test_metrics.json"
+    return {"validation_metrics": _read(val_path), "test_metrics": _read(test_path)}
+
+
 @app.post("/predict", response_model=PredictionResult)
 def predict(req: SingleCustomerRequest) -> PredictionResult:
     bundle = _get_bundle()

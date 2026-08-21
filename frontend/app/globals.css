@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/*
+  Design direction (v2): "premium AI fintech dashboard" — a deep navy/slate foundation
+  (never pure black) for the app shell and navigation, with clean white/off-white card
+  surfaces for content, so data is high-contrast and legible (and presents well on a
+  projector/printout). Indigo/blue is the primary accent; cyan marks data/AI elements;
+  green/amber/red are reserved for semantic risk states only.
+
+  Two independent surface systems, each with its own foreground colors, so the same
+  component never has to guess which text color is safe to use:
+    - "ink"     = the navy app shell (page background, sidebar, header band). Text on
+                  ink uses the light ink-foreground family.
+    - "surface" = white/off-white cards and panels. Text on surface uses the dark
+                  surface-foreground family.
+*/
+
+:root {
+  /* Navy app-shell foundation (sidebar, page background, header band) */
+  --ink: #0b1220;
+  --ink-elevated: #101a30;
+  --ink-foreground: #f1f5f9;
+  --ink-foreground-muted: #94a3b8;
+  --ink-foreground-faint: #64748b;
+  --ink-border: #1e293b;
+
+  /* White/off-white content surfaces (cards, tables, forms) */
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-foreground: #0f172a;
+  --surface-foreground-muted: #55627a;
+  --surface-foreground-faint: #8592a8;
+  --surface-border: #e2e8f0;
+
+  /* Primary accent: blue/indigo. Secondary: cyan for data/AI highlights. */
+  --accent-primary: #4f46e5;
+  --accent-primary-hover: #4338ca;
+  --accent-primary-soft: #eef2ff;
+  --accent-cyan: #0891b2;
+  --accent-cyan-soft: #ecfeff;
+
+  /* Semantic risk scale — meaning is fixed, only the rendering changed. These are used for
+     backgrounds, borders, dots, chart bars, and gauge segments (non-text UI), where WCAG's
+     3:1 non-text contrast requirement against white/near-white is comfortably met. */
+  --risk-very-low: #10b981;
+  --risk-low: #3b82f6;
+  --risk-medium: #f59e0b;
+  --risk-high: #f97316;
+  --risk-very-high: #ef4444;
+
+  /* Darker text-safe variants of the same five risk colors, used anywhere the color is the
+     TEXT color on a white/off-white surface. The 500-shade saturated colors above fail WCAG
+     AA (4.5:1) as text on white (measured 2.1–3.8:1) -- these 700-shade equivalents measure
+     5.0–6.7:1, comfortably passing, while keeping the same hue so the semantic color mapping
+     (green/blue/amber/orange/red) is still immediately recognizable. */
+  --risk-very-low-text: #047857;
+  --risk-low-text: #1d4ed8;
+  --risk-medium-text: #b45309;
+  --risk-high-text: #c2410c;
+  --risk-very-high-text: #b91c1c;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-elevated: var(--ink-elevated);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-foreground-muted: var(--ink-foreground-muted);
+  --color-ink-foreground-faint: var(--ink-foreground-faint);
+  --color-ink-border: var(--ink-border);
+
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-surface-foreground-muted: var(--surface-foreground-muted);
+  --color-surface-foreground-faint: var(--surface-foreground-faint);
+  --color-surface-border: var(--surface-border);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-hover: var(--accent-primary-hover);
+  --color-accent-primary-soft: var(--accent-primary-soft);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-cyan-soft: var(--accent-cyan-soft);
+
+  --color-risk-very-low: var(--risk-very-low);
+  --color-risk-low: var(--risk-low);
+  --color-risk-medium: var(--risk-medium);
+  --color-risk-high: var(--risk-high);
+  --color-risk-very-high: var(--risk-very-high);
+
+  --color-risk-very-low-text: var(--risk-very-low-text);
+  --color-risk-low-text: var(--risk-low-text);
+  --color-risk-medium-text: var(--risk-medium-text);
+  --color-risk-high-text: var(--risk-high-text);
+  --color-risk-very-high-text: var(--risk-very-high-text);
+
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  border-color: var(--surface-border);
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--ink);
+  color: var(--ink-foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  background-image:
+    radial-gradient(circle at 12% -5%, rgba(79, 70, 229, 0.14), transparent 42%),
+    radial-gradient(circle at 88% 15%, rgba(8, 145, 178, 0.1), transparent 38%);
+}
+
+::selection {
+  background: var(--accent-primary);
+  color: #ffffff;
+}
+
+/* Visible keyboard focus everywhere, not just default browser outline styling */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Overflow safety net: long values (model names, calibration methods, status text) wrap
+   instead of escaping their card, and never rely on overflow:hidden to hide content. */
+.value-wrap {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
