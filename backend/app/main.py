@@ -33,7 +33,10 @@ app = FastAPI(
 # Loosen for local dev; restrict to the real frontend origin(s) before deploying.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://customer-fraud-risk-prediction.vercel.app",
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
